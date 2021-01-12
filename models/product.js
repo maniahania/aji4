@@ -1,7 +1,55 @@
 const bookshelf= require('../config/bookshelf');
+const Checkit = require('checkit');
+
+var validationRules = new Checkit({
+   name: [
+      {
+         'rule': 'required',
+         'message': 'Product name is required!'
+      }
+   ],
+   description: [
+      {
+         'rule': 'required',
+         'message': 'Product description is required!'
+      }
+   ],
+   unitPrice: [
+      {
+         'rule': 'required',
+         'message': 'Product price is required!'
+      },
+      {
+         'rule': 'greaterThan:0',
+         'message': 'Product price has to be greater than zero!'
+      }
+   ],
+   unitWeight: [
+      {
+         'rule': 'required',
+         'message': 'Product weight is required!'
+      },
+      {
+         'rule': 'greaterThan:0',
+         'message': 'Product weight has to be greater than zero!'
+      }
+   ],
+   categoryId: [
+      {
+         'rule': 'required',
+         'message': 'Product category is required!'
+      }
+   ]
+});
 
 const Product = bookshelf.Model.extend({
-   tableName: 'products'
+   tableName: 'products',
+   initialize: function() {
+      this.on('saving', this.validateSave);
+   },
+   validateSave: function() {
+      return validationRules.run(this.attributes);
+   }
 })
 
 module.exports.getAll = () => {
@@ -20,7 +68,11 @@ module.exports.create = (product) => {
        unitWeight: product.unitWeight,
        categoryId: product.categoryId
 
-   }).save();
+   }).save().then(function(validated){
+         console.log(validated)
+   }).catch(function(message) { 
+         console.log(message);
+   })
 };
 
 module.exports.update = (id,product) => {

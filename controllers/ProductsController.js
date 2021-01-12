@@ -19,19 +19,12 @@ exports.getAll = (req, res) => {
  };
  
  exports.store = (req, res) => {
-    const newProduct = Product.create({
-        'name': req.body.name,
-        'description': req.body.description,
-        'unitPrice': req.body.unitPrice,
-        'unitWeight': req.body.unitWeight,
-        'categoryId': req.body.categoryId
-    }).then(function() {
-        res.json({
-            'status':'saved!',
-            'product': newProduct,
-        });
-    });
- 
+    Product.create({...req.body})
+           .then(
+            function(product) {
+                res.json(product)
+            }
+    )
  };
  
 exports.updateById = (req, res) => {

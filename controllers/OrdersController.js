@@ -34,11 +34,10 @@ const _ = require('underscore');
  };
 
  exports.store = (req, res) => {
-    const newOrder = Order.create({...req.body})
-    .then(function() {
-        res.json({
-            'status':'saved!',
-            'order': newOrder,
+    Order.create({...req.body})
+         .then(function() {
+            res.json({
+                'status':'saved!'
         });
     });
  
