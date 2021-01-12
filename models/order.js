@@ -10,13 +10,15 @@ const Order = bookshelf.model('Order',{
 
 const OrderProductsList = bookshelf.model('OrderProductsList',{
     tableName: 'orderproductslist',
+    hidden: 'orderId',
     orders() {
-        return this.belongsTo('Order','id')
+        return this.belongsTo('Order')
     }
 })
 
 module.exports.getAll = () => {
-   return Order.fetchAll({withRelated: ['products']})
+   return Order.fetchAll({withRelated: ['products']
+})
 }
 
 module.exports.getById = (id) => {
