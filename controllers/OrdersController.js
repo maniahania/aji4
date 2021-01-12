@@ -1,14 +1,14 @@
 const Order = require('../models/order');
 const _ = require('underscore');
-
-exports.getAll = (req, res) => {
+ 
+ exports.getAll = (req, res) => {
     Order.getAll().then(
-        function(allOrders) {
-            res.json(allOrders);
+        function(orders) {
+            res.json(orders);
         }
     );
  };
- 
+
  exports.getById = (req, res) => {
     Order.getById(req.params.id).then(
         function(order) {
@@ -34,13 +34,8 @@ exports.getAll = (req, res) => {
  };
 
  exports.store = (req, res) => {
-    const newOrder = Order.create({
-        'approvalDate': req.body.approvalDate,
-        'orderStateId': req.body.orderStateId,
-        'username': req.body.username,
-        'email': req.body.email,
-        'phoneNumber': req.body.phoneNumber
-    }).then(function() {
+    const newOrder = Order.create({...req.body})
+    .then(function() {
         res.json({
             'status':'saved!',
             'order': newOrder,
@@ -48,20 +43,15 @@ exports.getAll = (req, res) => {
     });
  
  };
- 
+ /*
  exports.updateById = (req, res) => {
-    Order.update(req.params.id, {
-        'approvalDate': req.body.approvalDate,
-        'orderStateId': req.body.orderStateId,
-        'username': req.body.username,
-        'email': req.body.email,
-        'phoneNumber': req.body.phoneNumber
-    }).then(
-        function(order) {
-            res.json(order);
-        }
-    )    
- }
+    Order.update(req.params.id, {...req.body})
+    .then(function() {
+            res.json({
+            'status':'saved!'
+        })
+    })    
+ }*/
 
  exports.updateOrderState = (req,res) => {
      Order.updateState(req.params.id, req.params.orderStateId).then(

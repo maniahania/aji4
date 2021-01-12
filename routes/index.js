@@ -16,7 +16,7 @@ router.get('/orders/:id', OrdersController.getById);
 router.get('/orders/username/:username', OrdersController.getByUsername);
 router.get('/orders/stateId/:orderStateId', OrdersController.getByState);
 router.post('/orders', OrdersController.store);
-router.put('/orders/:id', OrdersController.updateById);
+//router.put('/orders/:id', OrdersController.updateById);
 router.put('/orders/:id/:orderStateId', OrdersController.updateOrderState);
 
 router.get('/categories', CategoriesController.getAll);
