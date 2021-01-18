@@ -19,6 +19,10 @@ var validationRules = new Checkit({
         {
             'rule': 'required',
             'message': 'Email is required!'
+        },
+        {
+            'rule': 'email',
+            'message': 'Email is incorrect!'
         }
     ],
     phoneNumber: [
@@ -44,6 +48,7 @@ var validationRulesForList = new Checkit({
 
 const Order = bookshelf.model('Order',{
     tableName: 'orders',
+    idAttribute: 'id',
     products() {
         return this.hasMany('OrderProductsList','orderId')
     },

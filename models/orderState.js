@@ -1,7 +1,8 @@
 const bookshelf= require('../config/bookshelf');
 
 const State = bookshelf.Model.extend({
-   tableName: 'orderstates'
+   tableName: 'orderstates',
+   idAttribute: 'id'
 })
 
 module.exports.getAll = () => {

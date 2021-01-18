@@ -44,6 +44,7 @@ var validationRules = new Checkit({
 
 const Product = bookshelf.Model.extend({
    tableName: 'products',
+   idAttribute: 'id',
    initialize: function() {
       this.on('saving', this.validateSave);
    },
