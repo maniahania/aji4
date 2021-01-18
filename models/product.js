@@ -69,10 +69,8 @@ module.exports.create = (product) => {
        unitWeight: product.unitWeight,
        categoryId: product.categoryId
 
-   }).save().then(function(validated){
-         console.log(validated)
-   }).catch(function(message) { 
-         console.log(message);
+   }).save().catch(Checkit.Error, function(message) { 
+      console.log(message.toJSON());
    })
 };
 
@@ -87,9 +85,7 @@ module.exports.update = (id,product) => {
        categoryId: product.categoryId
        }, 
        {patch: true}
-   ).then(function(validated){
-      console.log(validated)
-   }).catch(function(message) { 
-      console.log(message);
+   ).catch(function(message) { 
+      console.log(message.toJSON());
 });
 }

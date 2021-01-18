@@ -109,11 +109,11 @@ module.exports.create = (order) => {
                     quantity: element.quantity
                 }).save().catch(
                     Checkit.Error, function(message) { 
-                       console.log(message);
+                        console.log(message.toJSON());
             })} 
          }).catch(
          Checkit.Error, function(message) { 
-            console.log(message);
+            console.log(message.toJSON());
       })
 }
 /*
