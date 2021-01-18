@@ -86,5 +86,9 @@ module.exports.update = (id,product) => {
        categoryId: product.categoryId
        }, 
        {patch: true}
-   );
+   ).then(function(validated){
+      console.log(validated)
+   }).catch(function(message) { 
+      console.log(message);
+});
 }

@@ -29,6 +29,23 @@ var validationRules = new Checkit({
     ]
 });
 
+var validationRulesForList = new Checkit({
+    quantity: [
+        {
+            'rule': 'numeric',
+            'message': 'Quantity of a product must be a number!'
+        },
+        {
+            'rule': 'greaterThan:0',
+            'message': 'Quantity of a product has to be greater than zero!'
+        },
+        {
+            'rule': 'integer',
+            'message': 'Quantity of a product must be a whole number!'
+        }
+    ]
+});
+
 const Order = bookshelf.model('Order',{
     tableName: 'orders',
     products() {
@@ -36,10 +53,10 @@ const Order = bookshelf.model('Order',{
     },
     initialize: function() {
         this.on('saving', this.validateSave);
-     },
-     validateSave: function() {
+    },
+    validateSave: function() {
         return validationRules.run(this.attributes);
-     }
+    }
 })
 
 const OrderProductsList = bookshelf.model('OrderProductsList',{
@@ -47,6 +64,12 @@ const OrderProductsList = bookshelf.model('OrderProductsList',{
     hidden: 'orderId',
     orders() {
         return this.belongsTo('Order')
+    },
+    initialize: function() {
+        this.on('saving', this.validateSave);
+    },
+    validateSave: function() {
+        return validationRulesForList.run(this.attributes);
     }
 })
 

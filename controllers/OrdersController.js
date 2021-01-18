@@ -35,10 +35,8 @@ const _ = require('underscore');
 
  exports.store = (req, res) => {
     Order.create({...req.body})
-         .then(function() {
-            res.json({
-                'status':'saved!'
-        });
+         .then(function(order) {
+            res.json(order);
     });
  
  };
