@@ -32,10 +32,6 @@ var validationRules = new Checkit({
 var validationRulesForList = new Checkit({
     quantity: [
         {
-            'rule': 'numeric',
-            'message': 'Quantity of a product must be a number!'
-        },
-        {
             'rule': 'greaterThan:0',
             'message': 'Quantity of a product has to be greater than zero!'
         },
@@ -66,9 +62,9 @@ const OrderProductsList = bookshelf.model('OrderProductsList',{
         return this.belongsTo('Order')
     },
     initialize: function() {
-        this.on('saving', this.validateSave);
+        this.on('saving', this.validateSaveList);
     },
-    validateSave: function() {
+    validateSaveList: function() {
         return validationRulesForList.run(this.attributes);
     }
 })
@@ -100,15 +96,16 @@ module.exports.create = (order) => {
             email: order.email,
             phoneNumber: order.phoneNumber
         }).save().then(data => {
-            console.log(data)
             let orderid = data.attributes.id
             for (let element of order.products){
-                new OrderProductsList().save({
+                new OrderProductsList({
                     orderId: orderid,
                     productId: element.productId,
                     quantity: element.quantity
-                })
-            } 
+                }).save().catch(
+                    Checkit.Error, function(message) { 
+                       console.log(message);
+            })} 
          }).catch(
          Checkit.Error, function(message) { 
             console.log(message);
