@@ -3,40 +3,54 @@ const _ = require('underscore');
 
 exports.getAll = (req, res) => {
     Product.getAll().then(
-        function(allProducts) {
+        function (allProducts) {
             res.json(allProducts);
         }
     );
- };
- 
- exports.getById = (req, res) => {
+};
+
+exports.getById = (req, res) => {
     Product.getById(req.params.id).then(
-        function(product) {
-            res.json(product);
+        function (product) {
+            if (product == null) {
+                res.status(400)
+            }
+            res.json(product)
+        }
+    );
+};
+
+exports.store = (req, res) => {
+    Product.create({ ...req.body })
+        .then(
+            function (product) {
+                if (product == null) {
+                    res.status(400)
+                }
+                res.json(product)
+            }
+        )
+};
+
+exports.updateById = (req, res) => {
+    Product.getById(req.params.id).then(
+        function (product) {
+            if (product == null) {
+                res.status(400)
+                console.log('Product with id ' + req.params.id + ' does not exist!')
+                res.json(product)
+            } else {
+                Product.update(req.params.id, { ...req.body })
+                    .then(
+                        function (product) {
+                            if (product == null) {
+                                res.status(400)
+                            }
+                            res.json(product)
+                        }
+                    )
+            }
         }
     );
 
- };
- 
- exports.store = (req, res) => {
-    Product.create({...req.body})
-           .then(
-            function(product) {
-                res.json(product)
-            }
-    )
- };
- 
-exports.updateById = (req, res) => {
-    Product.update(req.params.id,{
-        'name': req.body.name,
-        'description': req.body.description,
-        'unitPrice': req.body.unitPrice,
-        'unitWeight': req.body.unitWeight,
-        'categoryId': req.body.categoryId
-    }).then(
-        function(product) {
-            res.json(product);
-        }
-    )    
- }
+}

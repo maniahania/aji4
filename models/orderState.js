@@ -1,4 +1,4 @@
-const bookshelf= require('../config/bookshelf');
+const bookshelf = require('../config/bookshelf');
 
 const State = bookshelf.Model.extend({
    tableName: 'orderstates',

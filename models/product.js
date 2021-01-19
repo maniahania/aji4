@@ -1,5 +1,7 @@
-const bookshelf= require('../config/bookshelf');
+const bookshelf = require('../config/bookshelf')
 const Checkit = require('checkit');
+const e = require('express');
+const { check } = require('checkit');
 
 var validationRules = new Checkit({
    name: [
@@ -45,47 +47,51 @@ var validationRules = new Checkit({
 const Product = bookshelf.Model.extend({
    tableName: 'products',
    idAttribute: 'id',
-   initialize: function() {
-      this.on('saving', this.validateSave);
+   initialize: function () {
+      this.on('saving', this.validateSave)
    },
-   validateSave: function() {
-      return validationRules.run(this.attributes);
+   validateSave: function () {
+      return validationRules.run(this.attributes)
    }
 })
 
 module.exports.getAll = () => {
-   return Product.fetchAll();
+   return Product.fetchAll({ require: false })
 }
 
 module.exports.getById = (id) => {
-   return new Product({'id':id}).fetch();
+   let el = new Product({ 'id': id }).fetch({ require: false })
 }
 
 module.exports.create = (product) => {
-   return new Product({
-       name: product.name,
-       description: product.description,
-       unitPrice: product.unitPrice,
-       unitWeight: product.unitWeight,
-       categoryId: product.categoryId
+   let created = new Product({
+      name: product.name,
+      description: product.description,
+      unitPrice: product.unitPrice,
+      unitWeight: product.unitWeight,
+      categoryId: product.categoryId
 
-   }).save().catch(Checkit.Error, function(message) { 
-      console.log(message.toJSON());
+   }).save().catch(Checkit.Error, function (message) {
+      console.log(message.toString())
+      return null
    })
+   return created
 };
 
-module.exports.update = (id,product) => {
-   return new Product({
-       id: id
+module.exports.update = (id, product) => {
+   let created = new Product({
+      id: id
    }).save({
-       name: product.name,
-       description: product.description,
-       unitPrice: product.unitPrice,
-       unitWeight: product.unitWeight,
-       categoryId: product.categoryId
-       }, 
-       {patch: true}
-   ).catch(function(message) { 
-      console.log(message.toJSON());
-});
+      name: product.name,
+      description: product.description,
+      unitPrice: product.unitPrice,
+      unitWeight: product.unitWeight,
+      categoryId: product.categoryId
+   },
+      { patch: true }
+   ).catch(Checkit.Error, function (message) {
+      console.log(message.toString())
+      return null
+   });
+   return created
 }

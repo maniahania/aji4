@@ -105,3 +105,4 @@ dist
 
 # db config
 config/
+config/knexfile.js

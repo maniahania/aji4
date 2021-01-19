@@ -11,10 +11,10 @@ const app = express();
 
 // konfiguracja parserów
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // konfiguracja routera dla wszystkich ścieżek
 app.use('/', routes);
-  
+
 module.exports = app;
