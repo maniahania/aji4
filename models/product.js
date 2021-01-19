@@ -60,7 +60,7 @@ module.exports.getAll = () => {
 }
 
 module.exports.getById = (id) => {
-   let el = new Product({ 'id': id }).fetch({ require: false })
+   return new Product({ 'id': id }).fetch({ require: false })
 }
 
 module.exports.create = (product) => {
